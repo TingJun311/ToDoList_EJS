@@ -1,28 +1,31 @@
 const express = require("express"); // To user express js
-const userData = require("body-parser"); // To get user data 
+const userData = require("body-parser"); // To get user data
 
 const app = express();
-app.set("view engine", "ejs"); // To enable ejs 
+app.set("view engine", "ejs"); // To enable ejs
 app.listen(3000, () => {
     // Set the port listen on 3000
     // Log if success
     console.log("Server running on port 3000");
 });
-app.use(userData.urlencoded({
-    // When using the body-parser package
-    extended: true
-}));
+app.use(
+    userData.urlencoded({
+        // When using the body-parser package
+        extended: true,
+    })
+);
 app.use(express.static("public")); // To set the file static to dynamic
 
-const addedItem = [], workListItem = [];
+const addedItem = [],
+    workListItem = [];
 // To store todos item and work list item
 const date = new Date();
 const optionsDate = {
     // Format for the date
-    weekday: 'short',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+    weekday: "short",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
 };
 
 app.get("/", (req, res) => {
@@ -31,7 +34,7 @@ app.get("/", (req, res) => {
     res.render("list", {
         // Render the ejs file and pass in properties
         curDay: curDay,
-        newItem: addedItem
+        newItem: addedItem,
     });
 });
 
@@ -40,9 +43,9 @@ app.post("/", (req, res) => {
     if (newItem === null || newItem === "") {
         // Font allow to add if empty
         res.redirect(
-            (req.body.submitBtn === "Work lists")? "/work" : "/"
+            req.body.submitBtn === "Work lists" ? "/work" : "/"
             // Redirect to the current page if empty
-            );
+        );
     } else {
         if (req.body.submitBtn === "Work lists") {
             // Check whether the user add from work or root page
@@ -53,7 +56,7 @@ app.post("/", (req, res) => {
             addedItem.push(newItem);
             res.redirect("/");
         }
-    }  
+    }
 });
 
 app.get("/work", (req, res) => {
@@ -61,8 +64,6 @@ app.get("/work", (req, res) => {
     res.render("list", {
         // Render ejs to user and change the title
         curDay: "Work lists",
-        newItem: workListItem
+        newItem: workListItem,
     });
 });
-
-
