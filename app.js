@@ -9,6 +9,7 @@ app.listen(3000, () => {
 
 
 let addedItem = [];
+let workListItem = [];
 app.get("/", (req, res) => {
     const date = new Date();
     const curDate = getCurDay(date.getDay());
@@ -22,11 +23,35 @@ app.get("/", (req, res) => {
 app.use(userData.urlencoded({
     extended: true
 }))
+app.use(express.static("public"));
 
 app.post("/", (req, res) => {
-    addedItem.push(req.body.todo);
-    res.redirect("/");
+    const newItem = req.body.todo;
+
+    console.log(req.body)
+    if (newItem === null || newItem === "") {
+        res.redirect("/");
+    } else {
+        if (req.body.submitBtn === "Work lists") {
+            workListItem.push(newItem);
+            res.redirect("/work");
+        } else {
+            addedItem.push(newItem);
+            res.redirect("/");
+        }
+    }  
 });
+
+
+app.get("/work", (req, res) => {
+    res.render("list", {
+        curDay: "Work lists",
+        newItem: workListItem
+    });
+});
+
+
+
 
 var optionsDate = {
     weekday: 'short',
