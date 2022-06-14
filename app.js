@@ -14,6 +14,7 @@ app.use(express.static("public")); // To set the file static to dynamic
 
 const addedItem = [], workListItem = [];
 // To store todos item and work list item
+const date = new Date();
 const optionsDate = {
     // Format for the date
     weekday: 'short',
@@ -23,15 +24,14 @@ const optionsDate = {
 };
 
 app.get("/", (req, res) => {
-    const date = new Date();
     const curDay = date.toLocaleDateString("en-us", optionsDate);
     // To format the current date
-
     res.render("list", {
         curDay: curDay,
         newItem: addedItem
     });
 });
+
 app.post("/", (req, res) => {
     const newItem = req.body.todo; // Get user data
     if (newItem === null || newItem === "") {
