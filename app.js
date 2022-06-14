@@ -4,6 +4,8 @@ const userData = require("body-parser"); // To get user data
 const app = express();
 app.set("view engine", "ejs"); // To enable ejs 
 app.listen(3000, () => {
+    // Set the port listen on 3000
+    // Log if success
     console.log("Server running on port 3000");
 });
 app.use(userData.urlencoded({
@@ -27,6 +29,7 @@ app.get("/", (req, res) => {
     const curDay = date.toLocaleDateString("en-us", optionsDate);
     // To format the current date
     res.render("list", {
+        // Render the ejs file and pass in properties
         curDay: curDay,
         newItem: addedItem
     });
@@ -56,6 +59,7 @@ app.post("/", (req, res) => {
 app.get("/work", (req, res) => {
     // If user enter work list page
     res.render("list", {
+        // Render ejs to user and change the title
         curDay: "Work lists",
         newItem: workListItem
     });
